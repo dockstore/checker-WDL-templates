@@ -16,7 +16,7 @@ workflow arraycheck_wf {
 		File local_report_invnorm
 	}
 
-	call module1.arraycheck {
+	call module1.arraycheck_classic {
 		input:
 			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
 			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm]
