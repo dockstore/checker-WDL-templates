@@ -1,0 +1,9 @@
+{
+  "checker.file1": "/Users/ash/Documents/aaa_test_files/crams/NWD119836.0005.recab.cram.crai",
+  "checker.file2": "/Users/ash/Documents/aaa_test_files/crams/NWD176325.005percent.recab.crai",
+  "checker.singleTruth": "/Users/ash/Documents/aaa_test_files/blanks/blank.txt",
+  "checker.truthSet": [
+    "/Users/ash/Documents/aaa_test_files/blanks/foo1/foo.txt",
+    "/Users/ash/Documents/aaa_test_files/blanks/foo2/foo.txt"
+  ]
+}
