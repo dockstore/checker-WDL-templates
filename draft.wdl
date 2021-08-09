@@ -21,31 +21,28 @@ workflow checker {
 
 	call blank
 
-	call check_me.optOuts {
+	# Run the workflow to be checked
+	call check_me.run_example_wf {
 		input:
 			optionalInput = optionalInput,
 			requiredInput = requiredInput
 	}
 
+	# Check an array of files, wherein SOME of the files in that array might not be defined
+	# Any files that might not be defined need to fall back on a file that does exist, which
+	# can be done easily by passing in a bogus file
 	call checkmate.arraycheck_classic as nonscatteredChecker {
 		input:
-			# bizz, bar, foo in that order
-			test = [optOuts.required_out, select_first([optOuts.booleanOptional_out, blank.bogus]), select_first([optOuts.singularOptional_out, blank.bogus])],
-			truth = [optOuts.required_out, optOuts.required_out]
+			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, blank.bogus]), select_first([run_example_wf.wf_sometimesSingle, blank.bogus])],
+			truth = [run_example_wf.wf_always, run_example_wf.wf_always]
 	}
 
-	#if !(defined(optOuts.scatteredOptional_out)) {
-		# output a bogus, then in next task have that bogus be first in select_first?
-	#}
-
-	# this defined check does not change the type of scatteredOptional_out from Array[File]? to Array[File]
-	# therefore, arraycheck needs to be able to take in Array[File]? for this to work
-	# we could then have arraycheck see if the test array is defined and exit out if not, but this wastes time downloading truth array
-	if (defined(optOuts.scatteredOptional_out)) {
+	# Check an array of files, wherein the ENTIRE array might not be defined
+	if (defined(run_example_wf.wf_sometimesScattered)) {
 		call checkmate.arraycheck_optional as scatteredChecker {
 			input:
-				test = optOuts.scatteredOptional_out,
-				truth = [optOuts.required_out, optOuts.required_out]
+				test = run_example_wf.wf_sometimesScattered,
+				truth = [run_example_wf.wf_always, run_example_wf.wf_always]
 		}
 	}
 }

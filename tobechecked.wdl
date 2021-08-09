@@ -1,16 +1,36 @@
 version 1.0
 
-task needsOptionalInputFile {
+task always {
 	input {
-		File? optionalInput
+		File? bogus
 	}
-	
+
 	command <<<
 		touch "foo.txt"
 	>>>
 	
 	output {
-		File foo = "foo.txt"
+		File out_foo = "foo.txt"
+	}
+
+	runtime {
+		#docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
+		preemptible: 3
+		memory: 2 + "G"
+	}
+}
+
+task sometimes {
+	input {
+		File? bogus
+	}
+	
+	command <<<
+		touch "bar.txt"
+	>>>
+	
+	output {
+		File out_bar = "bar.txt"
 	}
 
 	runtime {
@@ -22,27 +42,7 @@ task needsOptionalInputFile {
 
 task never {
 	input {
-		Int? bogus
-	}
-
-	command <<<
-		touch "bar.txt"
-	>>>
-	
-	output {
-		File bar = "bar.txt"
-	}
-
-	runtime {
-		#docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
-		preemptible: 3
-		memory: 2 + "G"
-	}
-}
-
-task required {
-	input {
-		Int? nothing
+		File? bogus
 	}
 
 	command <<<
@@ -50,7 +50,7 @@ task required {
 	>>>
 	
 	output {
-		File bizz = "bizz.txt"
+		File out_bizz = "bizz.txt"
 	}
 
 	runtime {
@@ -60,7 +60,7 @@ task required {
 	}
 }
 
-workflow optOuts {
+workflow run_example_wf {
 	input {
 		File? optionalInput
 		File requiredInput
@@ -68,25 +68,25 @@ workflow optOuts {
 
 	Boolean runOptionalTask = false
 
-	call required as req
+	call always
 
 	if(defined(optionalInput)) {
-		call needsOptionalInputFile as opInSingular { input: optionalInput = optionalInput }
+		call sometimes as sometimesSingle
 
-		scatter(object in [optionalInput, requiredInput]) {
-			call needsOptionalInputFile as opInScattered { input: optionalInput = object }
+		scatter(someFile in [optionalInput, requiredInput]) {
+			call sometimes as sometimesScattered { input: bogus = someFile }
 		}
 	}
 
 	if(runOptionalTask) {
-		call never as opBool
+		call never
 	}
 
 	output {
-		File required_out = req.bizz
-		File? booleanOptional_out = opBool.bar
-		File? singularOptional_out = opInSingular.foo
-		Array[File]? scatteredOptional_out = opInScattered.foo
+		File wf_always = always.out_foo
+		File? wf_sometimesSingle = sometimesSingle.out_bar
+		Array[File]? wf_sometimesScattered = sometimesScattered.out_bar
+		File? wf_never = never.out_bizz
 	}
 
 }
