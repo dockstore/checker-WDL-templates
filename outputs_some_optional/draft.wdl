@@ -35,7 +35,8 @@ workflow checker {
 
 	# Check an array of files, wherein SOME of the files in that array might not be defined
 	# Any files that might not be defined need to fall back on a file that does exist, which
-	# can be done easily by passing in a bogus file
+	# can be done easily by passing in a bogus file, which we assume does not have a match
+	# in the truth array.
 	call checker_array.arraycheck_classic as nonscatteredChecker {
 		input:
 			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, blank.bogus]), select_first([run_example_wf.wf_sometimesSingle, blank.bogus])],
