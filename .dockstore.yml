@@ -1,0 +1,12 @@
+version: 1.2
+workflows:
+   - subclass: WDL
+     primaryDescriptorPath: /outputs_some_optional/example_opt.wdl
+     testParameterFiles:
+        - /outputs_some_optional/example_opt.json
+     name: wf-to-check-with-optional-outputs
+   - subclass: WDL
+     primaryDescriptorPath: /outputs_all_required/example_req.wdl
+     testParameterFiles:
+        - /outputs_all_required/example_req.json
+     name: wf-to-check-with-all-outputs-accounted-for
