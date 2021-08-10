@@ -14,7 +14,7 @@ task always {
 	}
 
 	runtime {
-		#docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
+		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
 		preemptible: 3
 		memory: 2 + "G"
 	}
@@ -34,7 +34,7 @@ task sometimes {
 	}
 
 	runtime {
-		#docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
+		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
 		preemptible: 3
 		memory: 2 + "G"
 	}
@@ -54,7 +54,7 @@ task never {
 	}
 
 	runtime {
-		#docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
+		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
 		preemptible: 3
 		memory: 2 + "G"
 	}

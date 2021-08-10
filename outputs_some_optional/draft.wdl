@@ -1,17 +1,20 @@
 version 1.0
 
-import "example_opt.wdl" as check_me
-import "../tasks/arraycheck_task.wdl" as checker_array
-import "../tasks/filecheck_task.wdl" as checker_file
+# Replace the first URL here with the URL of the workflow to be checked.
+import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.1/outputs_some_optional/example_opt.wdl" as check_me
+import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.1/tasks/filecheck_task.wdl" as checker_file
+import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.1/tasks/arraycheck_task.wdl" as checker_array
 
-# How to use:
+# If running this locally, you can import tasks with relative paths, like this:
+#import "example_opt.wdl" as check_me
+#import "../tasks/filecheck_task.wdl" as checker_file
+#import "../tasks/arraycheck_task.wdl" as checker_array
+
+# In summary:
 # Workflow outputs single Array[File] --> call arraycheck_classic
 # Workflow outputs several Files, all of which are required --> call arraycheck_classic
 # Workflow outputs optional Array[File] --> call arraycheck_optional
-# Workflow outputs several Files, some of which are required --> call arraycheck_classic with select_firsts
-
-# To do:
-# Workflow outputs single file
+# Workflow outputs several Files, some of which are required --> call arraycheck_classic with select_first()
 
 workflow checker {
 	input {
@@ -83,7 +86,7 @@ task blank {
 	}
 
 	runtime {
-		#docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
+		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
 		preemptible: 3
 		memory: 2 + "G"
 	}
