@@ -2,9 +2,17 @@ version 1.0
 
 # Author: Ash O'Farrell (UCSC)
 
+# As with arraycheck_optional, this task should never be called if test is
+# not defined. We set the truth to File? instead of File in order to account
+# for optional ouputs, as WDL can coerce a File into a File? but not a File?
+# into a File. In other words, giving test the type File? allows for this
+# task to account for optional and required outputs.
+# Things are a bit more complicated for arrays, though, hence why that one
+# needs two seperate tasks.
+
 task filecheck {
   input {
-    File test
+    File? test
     File truth
     Boolean verbose = true
   }

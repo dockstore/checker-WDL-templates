@@ -1,7 +1,8 @@
 version 1.0
 
-import "tobechecked.wdl" as check_me
-import "arraycheck_task.wdl" as checkmate
+import "example_opt.wdl" as check_me
+import "../tasks/arraycheck_task.wdl" as checker_array
+import "../tasks/filecheck_task.wdl" as checker_file
 
 # How to use:
 # Workflow outputs single Array[File] --> call arraycheck_classic
@@ -17,6 +18,10 @@ workflow checker {
 		# These should match the inputs of the workflow being checked
 		File? optionalInput
 		File requiredInput
+
+		# These are specific to the checker itself
+		File singleTruth
+		Array[File] arrayTruth
 	}
 
 	call blank
@@ -30,21 +35,38 @@ workflow checker {
 
 	# Check an array of files, wherein SOME of the files in that array might not be defined
 	# Any files that might not be defined need to fall back on a file that does exist, which
-	# can be done easily by passing in a bogus file
-	call checkmate.arraycheck_classic as nonscatteredChecker {
+	# can be done easily by passing in a bogus file, which we assume does not have a match
+	# in the truth array.
+	call checker_array.arraycheck_classic as nonscatteredChecker {
 		input:
 			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, blank.bogus]), select_first([run_example_wf.wf_sometimesSingle, blank.bogus])],
-			truth = [run_example_wf.wf_always, run_example_wf.wf_always]
+			truth = arrayTruth
 	}
 
 	# Check an array of files, wherein the ENTIRE array might not be defined
 	if (defined(run_example_wf.wf_sometimesScattered)) {
-		call checkmate.arraycheck_optional as scatteredChecker {
+		call checker_array.arraycheck_optional as scatteredChecker {
 			input:
 				test = run_example_wf.wf_sometimesScattered,
-				truth = [run_example_wf.wf_always, run_example_wf.wf_always]
+				truth = arrayTruth
 		}
 	}
+
+	# Here, we include a check for a single optional file. In the original workflow we implied
+	# it is never created, but in practice you can find use for this in files that only created
+	# if the user specifies a certain input flag. By including a defined() check beforehand,
+	# we avoid actually calling the task unless the test file actually exists, which will save
+	# us time and compute credits. Without this defined() check, the task will spin up as the
+	# task considers test to be an optional input, but will fail upon execution if test does not
+	# exist due to how the task is written.
+	if (defined(run_example_wf.wf_never)) {
+		call checker_file.filecheck as singleChecker {
+			input:
+				test = run_example_wf.wf_never,
+				truth = singleTruth
+		}
+	}
+
 }
 
 task blank {
