@@ -9,7 +9,7 @@ task arraycheck_classic {
 	input {
 		Array[File] test
 		Array[File] truth
-		Boolean fastfail = true  # should we exit out upon first mismatch?
+		Boolean fastfail = false  # should we exit out upon first mismatch?
 	}
 
 	Int test_size = ceil(size(test, "GB"))
@@ -20,6 +20,7 @@ task arraycheck_classic {
 	touch "report.txt"
 	for j in ~{sep=' ' test}
 	do
+		actual_truth=""  # reset every iteration
 		md5sum ${j} > sum.txt
 		test_basename="$(basename -- ${j})"
 
@@ -38,11 +39,15 @@ task arraycheck_classic {
 				then
 					exit 1
 				fi
+			else
+				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" | tee -a report.txt
 			fi
 		else
-			echo "A truth file was not found for $test_basename"
+			echo "A truth file was not found for $test_basename" | tee -a report.txt
 		fi
 	done
+
+	echo "Finished checking all files in test array." | tee -a report.txt
 
 	>>>
 
@@ -68,7 +73,7 @@ task arraycheck_optional {
 	input {
 		Array[File]? test
 		Array[File] truth
-		Boolean fastfail = true  # should we exit out upon first mismatch?
+		Boolean fastfail = false  # should we exit out upon first mismatch?
 	}
 
 	Int truth_size = ceil(size(truth, "GB"))
@@ -78,6 +83,7 @@ task arraycheck_optional {
 	touch "report.txt"
 	for j in ~{sep=' ' test}
 	do
+		actual_truth=""  # reset every iteration
 		md5sum ${j} > sum.txt
 		test_basename="$(basename -- ${j})"
 
@@ -96,11 +102,15 @@ task arraycheck_optional {
 				then
 					exit 1
 				fi
+			else
+				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" | tee -a report.txt
 			fi
 		else
-			echo "A truth file was not found for $test_basename"
+			echo "A truth file was not found for $test_basename" | tee -a report.txt
 		fi
 	done
+
+	echo "Finished checking all files in test array." | tee -a report.txt
 
 	>>>
 
