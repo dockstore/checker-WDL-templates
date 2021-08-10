@@ -3,6 +3,15 @@
 
  Be aware that checker workflows traditionally use https imports. DNAnexus does not support these imports, but you can still use checker workflows by placing the checker component into your existing workflow file.
 
+## How to use this repo
+ First of all, make sure your WDL has workflow level outputs. This allows for the workflow to be called as an entire workflow, rather than having to write out every task call a second time.
+
+ It is recommended to start with outputs_all_required/template_req.wdl if you have never written a checker workflow before. It is the most simple example, providing two types of checks: Checking a single file against another single file, and checking an array of test files against an array of truth files. The actual checker tasks are pulled from the tasks/ folder, which you can read to learn how to develop checkers of your own.
+
+ Many workflows have optional outputs, which greatly complicate the process of creating modular checker workflows. This is what the outputs_some_optional/ folder is for.
+
+ Advanced users may wish to check not just workflow-level outputs, but task-level intermediate files too. This will require calling the tasks of the imported workflow rather than the entire workflow itself. An example of this can be seen in `call_as_tasks/`
+
 ## tasks/
 This folder contains the tasks that get imported in checker workflows.
 
