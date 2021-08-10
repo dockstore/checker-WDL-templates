@@ -31,13 +31,16 @@ task arraycheck_classic {
 				break
 			fi
 		done
-
-		if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
-		then
-			if ~{fastfail}
+		if [ "$actual_truth" != "" ]; then
+			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
-				exit 1
+				if ~{fastfail}
+				then
+					exit 1
+				fi
 			fi
+		else
+			echo "A truth file was not found for $test_basename"
 		fi
 	done
 
@@ -59,6 +62,8 @@ task arraycheck_classic {
 
 task arraycheck_optional {
 	# Use this task when the ENTIRE array of test files may not exist
+	# Ideally this task should never be called if the test array does
+	# not exist... put a defined() check before calling this task.
 	# Note that disk size is based upon truth array * 2 now!
 	input {
 		Array[File]? test
@@ -84,13 +89,16 @@ task arraycheck_optional {
 				break
 			fi
 		done
-
-		if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
-		then
-			if ~{fastfail}
+		if [ "$actual_truth" != "" ]; then
+			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
-				exit 1
+				if ~{fastfail}
+				then
+					exit 1
+				fi
 			fi
+		else
+			echo "A truth file was not found for $test_basename"
 		fi
 	done
 
