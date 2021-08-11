@@ -58,7 +58,7 @@ task filecheck {
   runtime {
     cpu: 1
     disks: "local-disk " + finalDiskSize + " HDD"
-    docker: "debian:stretch-slim"
+    docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
     memory: "1 GB"
     preemptible: 2
   }

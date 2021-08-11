@@ -58,7 +58,7 @@ task arraycheck_classic {
 	runtime {
 		cpu: 2
 		disks: "local-disk " + finalDiskSize + " HDD"
-		docker: "debian:stretch-slim"
+		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
 		memory: "2 GB"
 		preemptible: 2
 	}
@@ -121,7 +121,7 @@ task arraycheck_optional {
 	runtime {
 		cpu: 2
 		disks: "local-disk " + finalDiskSize + " HDD"
-		docker: "debian:stretch-slim"
+		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
 		memory: "2 GB"
 		preemptible: 2
 	}
