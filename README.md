@@ -1,7 +1,7 @@
 # checker WDL templates
  Templates for checker WDLs. [Checker workflows](https://docs.dockstore.org/en/develop/advanced-topics/checker-workflows.html) are good practice for reproducibility. Although some developers may prefer an advanced CI/CD solution for their workflows, checker workflows are generally easier to develop and satisfactory for many use cases. Of course, checker workflows can be part of a more advanced CI/CD solution -- feel free to build upon these.
 
- Be aware that checker workflows traditionally use https imports. DNAnexus does not support these imports, but you can still use checker workflows by placing the checker component into your existing workflow file.
+ Be aware that checker workflows traditionally use https imports. DNAstack does not support these imports, but you can still use checker workflows by placing the checker component into your existing workflow file.
 
 ## How to use this repo
  First of all, make sure your WDL has [workflow level outputs](https://github.com/openwdl/wdl/blob/main/versions/1.0/SPEC.md#outputs). This allows for the workflow to be called as an entire workflow, rather than having to write out every task call a second time.
