@@ -15,6 +15,9 @@ import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.1/
 # Workflow outputs several Files, all of which are required --> call arraycheck_classic
 # Workflow outputs optional Array[File] --> call arraycheck_optional
 # Workflow outputs several Files, some of which are required --> call arraycheck_classic with select_first()
+# Workflow outputs single File, which is required --> call filecheck
+# Workflow outputs optional File --> call filecheck but put in a defined() check before the task call
+
 
 workflow checker {
 	input {
@@ -38,8 +41,8 @@ workflow checker {
 
 	# Check an array of files, wherein SOME of the files in that array might not be defined
 	# Any files that might not be defined need to fall back on a file that does exist, which
-	# can be done easily by passing in a bogus file, which we assume does not have a match
-	# in the truth array.
+	# can be done easily by passing in a bogus file via select_first. This bogus file will
+	# not have a match in the truth array, so it won't get md5 checked.
 	call checker_array.arraycheck_classic as nonscatteredChecker {
 		input:
 			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, blank.bogus]), select_first([run_example_wf.wf_sometimesSingle, blank.bogus])],
@@ -47,6 +50,7 @@ workflow checker {
 	}
 
 	# Check an array of files, wherein the ENTIRE array might not be defined
+	# In this example, the output of sometimesScattered is multiple files with the same name
 	if (defined(run_example_wf.wf_sometimesScattered)) {
 		call checker_array.arraycheck_optional as scatteredChecker {
 			input:
