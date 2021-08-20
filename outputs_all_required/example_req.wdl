@@ -11,7 +11,7 @@ task always {
 	>>>
 	
 	output {
-		File out_foo = glob("*.txt")[0]
+		File always_exists = glob("*.txt")[0]
 	}
 
 	runtime {
@@ -40,8 +40,8 @@ workflow run_req_wf {
 		}
 	}
 	output {
-		File notScattered_out = notScattered.out_foo
-		Array[File] scattered_out = scattered.out_foo
+		File notScattered_out = notScattered.always_exists
+		Array[File] scattered_out = scattered.always_exists
 	}
 
 }
