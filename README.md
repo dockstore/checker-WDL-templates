@@ -19,6 +19,3 @@
  Many workflows have optional outputs, which greatly complicate the process of creating modular checker workflows. This is what the `outputs_some_optional/` folder is for.
 
  Advanced users may wish to check not just workflow-level outputs, but task-level intermediate files too. This will require calling the tasks of the imported workflow rather than the entire workflow itself. An example of this can be seen in `call_as_tasks/`
-
-## depreciated/
-Old drafts which might get reused later...
