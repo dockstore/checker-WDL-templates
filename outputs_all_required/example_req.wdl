@@ -2,15 +2,16 @@ version 1.0
 
 task always {
 	input {
-		File? unused
+		File crai
 	}
+	String base_crai = basename(crai)
 
 	command <<<
-		touch "foo.txt"
+		echo "Your input file is: ~{base_crai}" | tee -a ~{base_crai}.txt
 	>>>
 	
 	output {
-		File out_foo = "foo.txt"
+		File out_foo = glob("*.txt")[0]
 	}
 
 	runtime {
@@ -24,14 +25,18 @@ workflow run_req_wf {
 	input {
 		File file1
 		File file2
+		File file3
 	}
 
-	call always as notScattered
+	call always as notScattered {
+		input:
+			crai = file1
+	}
 
-	scatter(a_file in [file1, file2]) {
+	scatter(a_file in [file2, file3]) {
 		call always as scattered {
 			input:
-				unused = a_file
+				crai = a_file
 		}
 	}
 	output {
