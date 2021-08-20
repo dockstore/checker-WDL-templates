@@ -1,9 +1,9 @@
 {
   "checker.optionalInput": "gs://topmed_workflow_testing/checker_toolkit/wf_inputs/NWD176325.005percent.recab.crai",
   "checker.requiredInput": "gs://topmed_workflow_testing/checker_toolkit/wf_inputs/NWD119836.0005.recab.cram.crai",
-  "checker.singleTruth": "gs://topmed_workflow_testing/checker_toolkit/truth_files/blank.txt",
+  "checker.singleTruth": "gs://topmed_workflow_testing/checker_toolkit/truth_files/foo.txt",
   "checker.arrayTruth": [
-    "gs://topmed_workflow_testing/checker_toolkit/truth_files/foo1/foo.txt",
-    "gs://topmed_workflow_testing/checker_toolkit/truth_files/foo2/foo.txt"
+    "gs://topmed_workflow_testing/checker_toolkit/truth_files/bar.txt",
+    "gs://topmed_workflow_testing/checker_toolkit/truth_files/another_bar/bar.txt"
   ]
 }
