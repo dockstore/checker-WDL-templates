@@ -2,7 +2,7 @@
   "checker.file1": "gs://topmed_workflow_testing/checker_toolkit/wf_inputs/NWD176325.005percent.recab.crai",
   "checker.file2": "gs://topmed_workflow_testing/checker_toolkit/wf_inputs/NWD119836.0005.recab.cram.crai",
   "checker.file3": "gs://topmed_workflow_testing/goleft/renamed_crai/NWD119836.0005.recab.crai",
-  "checker.singleTruth": "gs://topmed_workflow_testing/checker_toolkit/NWD176325.005percent.recab.crai.txt",
+  "checker.singleTruth": "gs://topmed_workflow_testing/checker_toolkit/truth_files/NWD176325.005percent.recab.crai.txt",
   "checker.truthSet": [
     "gs://topmed_workflow_testing/checker_toolkit/truth_files/NWD119836.0005.recab.cram.crai.txt",
     "gs://topmed_workflow_testing/checker_toolkit/truth_files/NWD119836.0005.recab.crai.txt"
