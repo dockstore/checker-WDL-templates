@@ -2,11 +2,11 @@ version 1.0
 
 task always {
 	input {
-		File? bogus
+		File? this_input_is_ignored
 	}
 
 	command <<<
-		touch "foo.txt"
+		echo "Foo!" | tee -a foo.txt
 	>>>
 	
 	output {
@@ -22,11 +22,11 @@ task always {
 
 task sometimes {
 	input {
-		File? bogus
+		File? this_input_is_ignored
 	}
 	
 	command <<<
-		touch "bar.txt"
+		echo "Bar!" | tee -a bar.txt
 	>>>
 	
 	output {
@@ -42,11 +42,11 @@ task sometimes {
 
 task never {
 	input {
-		File? bogus
+		File? this_input_is_ignored
 	}
 
 	command <<<
-		touch "bizz.txt"
+		echo "Bizz!" | tee -a bizz.txt
 	>>>
 	
 	output {
@@ -66,20 +66,21 @@ workflow run_example_wf {
 		File requiredInput
 	}
 
-	Boolean runOptionalTask = false
+	Boolean runOptionalTask = false # this is hardcoded; users cannot set this to true via json
 
-	call always
+	call always # foo
 
 	if(defined(optionalInput)) {
-		call sometimes as sometimesSingle
+		call sometimes as sometimesSingle # bar
 
+		# Yes, this results in outputs with identical filenames -- WDL can handle that!
 		scatter(someFile in [optionalInput, requiredInput]) {
-			call sometimes as sometimesScattered { input: bogus = someFile }
+			call sometimes as sometimesScattered { input: this_input_is_ignored = someFile }
 		}
 	}
 
 	if(runOptionalTask) {
-		call never
+		call never # bizz
 	}
 
 	output {

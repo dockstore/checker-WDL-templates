@@ -1,7 +1,7 @@
 version 1.0
 
 # Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.3/outputs_all_required/example_req.wdl" as check_me
+import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/better-outputs/outputs_all_required/example_req.wdl" as check_me
 import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.3/tasks/filecheck_task.wdl" as checker_file
 import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.3/tasks/arraycheck_task.wdl" as checker_array
 
@@ -21,6 +21,7 @@ workflow checker {
 		# First set of inputs: The same input(s) as the workflow to be checked
 		File file1
 		File file2
+		File file3
 
 		# Second set of inputs: The truth file(s)
 		File singleTruth
@@ -31,7 +32,8 @@ workflow checker {
 	call check_me.run_req_wf {
 		input:
 			file1 = file1,
-			file2 = file2
+			file2 = file2,
+			file3 = file3
 	}
 
 	# Check one test file (an output from the workflow to be checked) against one truth file
