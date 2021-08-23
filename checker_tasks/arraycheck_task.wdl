@@ -11,7 +11,6 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 # Note that this assumes that file names between the test and truth match
 
 task arraycheck_classic {
