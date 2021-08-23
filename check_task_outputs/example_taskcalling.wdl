@@ -10,7 +10,7 @@ version 1.0
 # as well as an example of checking a large amount of configurations.
 
 import "https://raw.githubusercontent.com/DataBiosphere/analysis_pipeline_WDL/v3.0.1/null-model/null-model.wdl" as nullmodel
-import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/v0.9.3/tasks/arraycheck_task.wdl" as arraycheck
+import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/main/checker_tasks/arraycheck_task.wdl" as arraycheck
 
 workflow checker_nullmodel {
 	input {
