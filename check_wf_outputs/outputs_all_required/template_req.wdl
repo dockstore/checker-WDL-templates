@@ -1,7 +1,7 @@
 version 1.0
 
 # Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/main/check_wf_outputs/outputs_all_required/example_req.wdl" as check_me
+import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/main/check_wf_outputs/outputs_all_required/parent_req.wdl" as check_me
 import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/main/checker_tasks/filecheck_task.wdl" as checker_file
 import "https://raw.githubusercontent.com/aofarrel/checker-WDL-templates/main/checker_tasks/arraycheck_task.wdl" as checker_array
 
