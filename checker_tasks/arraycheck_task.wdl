@@ -1,6 +1,7 @@
 version 1.0
 
 # Author: Ash O'Farrell (UCSC)
+
 # Note that this assumes that file names between the test and truth match
 
 task arraycheck_classic {
