@@ -1,4 +1,0 @@
-{  
-  "filecheck_wf.SB_report": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/basecase_report.Rmd",
-  "filecheck_wf.local_report": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/local-WDL-test-files-example/basecase_report.Rmd"
-}
