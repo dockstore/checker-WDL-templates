@@ -1,5 +1,6 @@
 version 1.0
 
+################################## LICENSE ##################################
 # Copyright 2021 Aisling "Ash" O'Farrell
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,19 +12,12 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# As with arraycheck_optional, this task should never be called if test is
-# not defined. We set the truth to File? instead of File in order to account
-# for optional ouputs, as WDL can coerce a File into a File? but not a File?
-# into a File. In other words, giving test the type File? allows for this
-# task to account for optional and required outputs.
-# Things are a bit more complicated for arrays, though, hence why that one
-# needs two seperate tasks.
-
 task filecheck {
   input {
     File? test
     File truth
     Boolean verbose = true
+    Boolean fail_if_nothing_to_check = false
   }
 
   Int test_size = ceil(size(test, "GB"))
@@ -31,6 +25,20 @@ task filecheck {
   Int finalDiskSize = test_size + truth_size + 3
 
   command <<<
+    # check if test is defined
+    if [ "~{test}" ]; then
+      echo "Test file exists" | tee -a report.txt
+    else
+      echo "No test file found" | tee -a report.txt
+      if [ "~{fail_if_nothing_to_check}" = "false" ]; then
+        echo "Nothing to do. Exiting gracefully..." | tee -a report.txt
+        exit 0
+      else
+        echo "Nothing to do. fail_if_nothing_to_check is true. Exiting disgracefully..."  | tee -a report.txt
+        exit 1
+      fi
+    fi
+    
     md5sum ~{test} > test.txt
     md5sum ~{truth} > truth.txt
     touch "report.txt"

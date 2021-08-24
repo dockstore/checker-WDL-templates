@@ -23,3 +23,7 @@
 
 ### Checking task-level outputs
  Advanced users may wish to check not just workflow-level outputs, but task-level intermediate files too. This will require calling the tasks of the imported workflow rather than the entire workflow itself. An example of this can be seen in `check_task_outputs/` folder. Note that this is based on a "real" workflow, and will take much longer to execute than most of the other repos in this folder.
+
+### Test data
+ All data in this repo was either created from scratch or are based upon 1000 Genomes data.
+

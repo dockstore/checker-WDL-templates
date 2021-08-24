@@ -1,5 +1,6 @@
 version 1.0
 
+################################## LICENSE ##################################
 # Copyright 2021 Aisling "Ash" O'Farrell
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,21 +12,24 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/check_wf_outputs/outputs_all_required/parent_req.wdl" as check_me
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/filecheck_task.wdl" as checker_file
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/arraycheck_task.wdl" as checker_array
-
+################################### NOTES ####################################
 # If running this locally, you can import tasks with relative paths, like this:
 #import "example_req.wdl" as check_me
 #import "../tasks/filecheck_task.wdl" as checker_file
 #import "../tasks/arraycheck_task.wdl" as checker_array
-
+#
 # There is no functional difference between "here's an array of files from
 # multiple different tasks" and "here's an array of files that was output 
 # from a single task," provided that in both cases ALL files within the array
 # AND the array itself are NOT optional. You do not need to know how many
 # files are in an array, but none of those files can have type File?.
+
+# Replace the first URL here with the URL of the workflow to be checked.
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/check_wf_outputs/outputs_all_required/parent_req.wdl" as check_me
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/filecheck_task.wdl" as checker_file
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/arraycheck_task.wdl" as checker_array
+
+
 
 workflow checker {
 	input {

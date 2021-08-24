@@ -1,5 +1,6 @@
 version 1.0
 
+################################## LICENSE ##################################
 # Copyright 2021 Aisling "Ash" O'Farrell
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +12,12 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Note that this assumes that file names between the test and truth match
+################################### NOTES ####################################
+# For every file in the test array, we iterate through the truth array and
+# try to find a file that matches the truth file. This assumes that file names 
+# between the test and truth files match. If a truth file cannot be found for
+# a test file, we continue.
+# You can set fastfail to exit 1 upon the first mismatch.
 
 task arraycheck_classic {
 	# Use this task when ALL files in array exist

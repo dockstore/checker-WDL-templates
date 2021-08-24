@@ -1,5 +1,6 @@
 version 1.0
 
+################################## LICENSE ##################################
 # Copyright 2021 Aisling "Ash" O'Farrell
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,8 +12,9 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+################################### NOTES ####################################
 # Caveat programmator: This runs a real null model workflow ten times
-# and downloads about eighty files from a Google Cloud bucket.
+# and downloads about eighty files from a requester-pays GC bucket.
 # Furthermore, as this is a simpler version of my null model checker
 # workflow, it does not include an R script that accounts for normal
 # variance between platforms. As such, this pipeline may (correctly)
