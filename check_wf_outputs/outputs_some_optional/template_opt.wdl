@@ -18,8 +18,8 @@ import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v0.99.
 
 # If running this locally, you can import tasks with relative paths, like this:
 #import "example_opt.wdl" as check_me
-#import "../tasks/filecheck_task.wdl" as checker_file
-#import "../tasks/arraycheck_task.wdl" as checker_array
+#import "../tasks/filecheck_task.wdl" as verify_file
+#import "../tasks/arraycheck_task.wdl" as verify_array
 
 # In summary:
 # Workflow outputs single Array[File] --> call arraycheck_classic
@@ -38,6 +38,7 @@ workflow checker {
 
 		# These are specific to the checker itself
 		File singleTruth
+		File magicTruth
 		Array[File] arrayTruth
 	}
 
@@ -54,7 +55,7 @@ workflow checker {
 	# Any files that might not be defined need to fall back on a file that does exist, which
 	# can be done easily by passing in a bogus file via select_first. This bogus file will
 	# not have a match in the truth array, so it won't get md5 checked.
-	call checker_array.arraycheck_classic as nonscatteredChecker {
+	call verify_array.arraycheck_classic as nonscatteredChecker {
 		input:
 			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, blank.bogus]), select_first([run_example_wf.wf_sometimesSingle, blank.bogus])],
 			truth = arrayTruth
@@ -63,7 +64,7 @@ workflow checker {
 	# Check an array of files, wherein the ENTIRE array might not be defined
 	# In this example, the output of sometimesScattered is multiple files with the same name
 	if (defined(run_example_wf.wf_sometimesScattered)) {
-		call checker_array.arraycheck_optional as scatteredChecker {
+		call verify_array.arraycheck_optional as scatteredChecker {
 			input:
 				test = run_example_wf.wf_sometimesScattered,
 				truth = arrayTruth
@@ -78,12 +79,23 @@ workflow checker {
 	# task considers test to be an optional input, but will fail upon execution if test does not
 	# exist due to how the task is written.
 	if (defined(run_example_wf.wf_never)) {
-		call checker_file.filecheck as singleChecker {
+		call verify_file.filecheck as singleChecker {
 			input:
 				test = run_example_wf.wf_never,
 				truth = singleTruth
 		}
 	}
+
+	# Here we run filechecker as a scattered task. One iteration will take a file that does
+	# exist, and the other takes a file that does not exist.
+	scatter(difficult_word in [run_example_wf.wf_magicword, run_example_wf.wf_nonexistent]) {
+		call verify_file.filecheck as scateredSingleChecker {
+			input:
+				test = difficult_word,
+				truth = magicTruth
+		}
+	}
+
 
 }
 
