@@ -43,12 +43,10 @@ task filecheck {
     md5sum ~{truth} > truth.txt
     touch "report.txt"
 
-    if cat ~{truth} | md5sum --check test.txt
-    then
+    if cat ~{truth} | md5sum --check test.txt; then
       echo "Files pass" | tee -a report.txt
     else
-      if ~{verbose}
-      then
+      if ~[ "{verbose}" ]; then
         echo "Test checksum:" | tee -a report.txt
         cat test.txt | tee -a report.txt
         echo "Truth checksum:" | tee -a report.txt
