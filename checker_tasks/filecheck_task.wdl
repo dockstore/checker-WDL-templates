@@ -20,9 +20,8 @@ task filecheck {
     Boolean fail_if_nothing_to_check = false
   }
 
-  Int test_size = if defined(test) then ceil(size(test, "GB")) else 0
   Int truth_size = ceil(size(truth, "GB"))
-  Int finalDiskSize = test_size + truth_size + 3
+  Int finalDiskSize =  2*truth_size + 3
 
   command <<<
     # check if test is defined
