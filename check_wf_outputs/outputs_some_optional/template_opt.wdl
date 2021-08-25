@@ -41,7 +41,7 @@ workflow checker {
 	
 	# So we tried this instead... but it doesn't work
 	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_nonexistent, fallback.bogus])]) {
-		call verify_file.filecheck as scatteredSingleChecker {
+		call verify_file.filecheck as scatteredSingleCheckerBorked {
 			input:
 				test = difficult_word,
 				truth = magicTruth
@@ -49,23 +49,25 @@ workflow checker {
 	}
 
 	# Neither does this.
-	call verify_array.arraycheck_classic as nonscatteredChecker {
+	call verify_array.arraycheck_classic as nonscatteredCheckerBorked {
 		input:
-			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_nonexistent, fallback.bogus])]
+			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_nonexistent, fallback.bogus])],
 			truth = arrayTruth
 	}
 
 	# Funnily enough, this works, even though wf_never also does not exist
-	call verify_array.arraycheck_classic as nonscatteredChecker {
-		input:
-			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, fallback.bogus])]
-			truth = arrayTruth
+	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_never, fallback.bogus])]) {
+		call verify_file.filecheck as scatteredSingleChecker {
+			input:
+				test = difficult_word,
+				truth = magicTruth
+		}
 	}
 
 	# And this works too. Again, the file does not exist, and the fallback happens as expected.
 	call verify_array.arraycheck_classic as nonscatteredChecker {
 		input:
-			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, fallback.bogus])]
+			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, fallback.bogus])],
 			truth = arrayTruth
 	}
 
