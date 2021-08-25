@@ -91,15 +91,6 @@ workflow run_example_wf {
 
 	call always # foo
 
-	if(defined(optionalInput)) {
-		call sometimes as sometimesSingle # bar
-
-		# Yes, this results in outputs with identical filenames -- WDL can handle that!
-		scatter(someFile in [optionalInput, requiredInput]) {
-			call sometimes as sometimesScattered { input: this_input_is_ignored = someFile }
-		}
-	}
-
 	if(runOptionalTask) {
 		call never # bizz
 	}
@@ -114,5 +105,4 @@ workflow run_example_wf {
 		File wf_magicword = one_is_missing.out_xyzzy
 		File? wf_nonexistent = one_is_missing.out_zzyzx
 	}
-
 }

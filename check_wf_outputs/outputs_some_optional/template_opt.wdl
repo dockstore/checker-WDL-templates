@@ -55,7 +55,7 @@ workflow checker {
 			truth = arrayTruth
 	}
 
-	# Funnily enough, this works, even though wf_never also does not exist
+	# This works, even though wf_never also does not exist
 	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_never, fallback.bogus])]) {
 		call verify_file.filecheck as scatteredSingleChecker {
 			input:
