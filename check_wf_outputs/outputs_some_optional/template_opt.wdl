@@ -66,7 +66,7 @@ workflow checker {
 	#}
 	# Therefore, if you need compatiability with Terra, it is better to fall back on a file
 	# that will always exist using select_first()
-	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_never, fallback.bogus])]) {
+	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_nonexistent, fallback.bogus])]) {
 		call verify_file.filecheck as scatteredSingleChecker {
 			input:
 				test = difficult_word,
@@ -105,7 +105,7 @@ workflow checker {
 	# select_first() is generally the better option for arrays.
 	call verify_array.arraycheck_classic as nonscatteredChecker {
 		input:
-			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_never, fallback.bogus]), select_first([run_example_wf.wf_sometimesSingle, fallback.bogus])],
+			test = [run_example_wf.wf_always, select_first([run_example_wf.wf_nonexistent, fallback.bogus]), select_first([run_example_wf.wf_sometimesSingle, fallback.bogus])],
 			truth = arrayTruth
 	}
 
