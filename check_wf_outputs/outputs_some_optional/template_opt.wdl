@@ -12,9 +12,9 @@ version 1.0
 # limitations under the License.
 
 # Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v0.99.0/check_wf_outputs/outputs_some_optional/parent_opt.wdl" as check_me
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/filecheck_task.wdl" as verify_file
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/arraycheck_task.wdl" as verify_array
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/debug-terra/check_wf_outputs/outputs_some_optional/parent_opt.wdl" as check_me
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/debug-terra/checker_tasks/filecheck_task.wdl" as verify_file
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/debug-terra/checker_tasks/arraycheck_task.wdl" as verify_array
 
 # If running this locally, you can import tasks with relative paths, like this:
 #import "example_opt.wdl" as check_me
@@ -66,7 +66,7 @@ workflow checker {
 	#}
 	# Therefore, if you need compatiability with Terra, it is better to fall back on a file
 	# that will always exist using select_first()
-	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_nonexistent, fallback.bogus])]) {
+	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_never, fallback.bogus])]) {
 		call verify_file.filecheck as scatteredSingleChecker {
 			input:
 				test = difficult_word,
