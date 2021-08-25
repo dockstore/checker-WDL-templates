@@ -20,7 +20,7 @@ task filecheck {
     Boolean fail_if_nothing_to_check = false
   }
 
-  Int test_size = ceil(size(test, "GB"))
+  Int test_size = if defined(test) then ceil(size(test, "GB")) else 0
   Int truth_size = ceil(size(truth, "GB"))
   Int finalDiskSize = test_size + truth_size + 3
 
@@ -72,7 +72,7 @@ task filecheck {
 
   runtime {
     cpu: 1
-    disks: "local-disk " + finalDiskSize + " HDD"
+    disks: if defined(test) then "local-disk " + finalDiskSize + " HDD" else "local-disk " + truth_size + " HDD"
     docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
     memory: "1 GB"
     preemptible: 2
