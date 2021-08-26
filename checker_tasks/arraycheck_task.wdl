@@ -51,6 +51,7 @@ task arraycheck_classic {
 		if [ "$actual_truth" != "" ]; then
 			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
+				echo "Match not found"
 				if ~{fastfail}
 				then
 					exit 1

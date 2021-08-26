@@ -17,9 +17,9 @@ import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/c
 import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/arraycheck_task.wdl" as verify_array
 
 # If running this locally, you can import tasks with relative paths, like this:
-#import "example_opt.wdl" as check_me
-#import "../tasks/filecheck_task.wdl" as verify_file
-#import "../tasks/arraycheck_task.wdl" as verify_array
+#import "parent_opt.wdl" as check_me
+#import "../checker_tasks/filecheck_task.wdl" as verify_file
+#import "../checker_tasks/arraycheck_task.wdl" as verify_array
 
 # In summary:
 # Workflow outputs single Array[File] --> call arraycheck_classic
@@ -69,7 +69,7 @@ workflow checker {
 	}
 
 	# Check an array of files, wherein SOME of the files in that array might not be defined,
-	# against an array of truth files. scatteredSingleChecker only used one truth file but
+	# against an array of truth files. singleChecker only used one truth file but
 	# this one uses multiple.
 	# Any files that might not be defined need to fall back on a file that does exist, which
 	# can be done easily by passing in a bogus file via select_first. This bogus file will
