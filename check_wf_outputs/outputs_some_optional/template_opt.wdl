@@ -18,8 +18,8 @@ import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/c
 
 # If running this locally, you can import tasks with relative paths, like this:
 #import "parent_opt.wdl" as check_me
-#import "../checker_tasks/filecheck_task.wdl" as verify_file
-#import "../checker_tasks/arraycheck_task.wdl" as verify_array
+#import "../../checker_tasks/filecheck_task.wdl" as verify_file
+#import "../../checker_tasks/arraycheck_task.wdl" as verify_array
 
 # In summary:
 # Workflow outputs single Array[File] --> call arraycheck_classic
