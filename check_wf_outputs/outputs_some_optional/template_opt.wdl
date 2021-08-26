@@ -12,7 +12,7 @@ version 1.0
 # limitations under the License.
 
 # Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v0.99.0/check_wf_outputs/outputs_some_optional/parent_opt.wdl" as check_me
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/check_wf_outputs/outputs_some_optional/parent_opt.wdl" as check_me
 import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/filecheck_task.wdl" as verify_file
 import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/main/checker_tasks/arraycheck_task.wdl" as verify_array
 
@@ -38,7 +38,6 @@ workflow checker {
 
 		# These are specific to the checker itself
 		File singleTruth
-		File magicTruth
 		Array[File] arrayTruth
 	}
 
@@ -53,40 +52,14 @@ workflow checker {
 	# may or may not exist when this checker workflow is run. See below for more details.
 	call fallback
 
-	# Here we run filechecker as a scattered task. One iteration will take a file that does
-	# exist, and the other takes a file that does not exist.
-	# While this works on some backends, it will fail on Terra as Google will treat the
-	# nonexistent file as a localization error.
-	#scatter(difficult_word in [run_example_wf.wf_magicword, run_example_wf.wf_nonexistent]) {
-	#	call verify_file.filecheck as scatteredSingleCheckerInvalidOnTerra {
-	#		input:
-	#			test = difficult_word,
-	#			truth = magicTruth
-	#	}
-	#}
-	# Therefore, if you need compatiability with Terra, it is better to fall back on a file
-	# that will always exist using select_first()
-	scatter(difficult_word in [run_example_wf.wf_magicword, select_first([run_example_wf.wf_nonexistent, fallback.bogus])]) {
-		call verify_file.filecheck as scatteredSingleChecker {
-			input:
-				test = difficult_word,
-				truth = magicTruth
-		}
-	}
-	# Here, we include a check for a single optional file. In the original workflow we implied
-	# it is never created, but in practice you can find use for this in files that only created
+	# template_req.wdl already has examples for checking a single required file, but here,
+	# we include a check for a single optional file. In the original workflow we implied
+	# it is never created, but in practice you can find use for this in files that only made
 	# if the user specifies a certain input flag. By including a defined() check beforehand,
 	# we avoid actually calling the task unless the test file actually exists, which will save
 	# us time and compute credits. Without this defined() check, the task will spin up as the
 	# task considers test to be an optional input, but will fail upon execution if test does not
 	# exist due to how the task is written.
-	# Functionally this is very similiar to the approach taken above, and if you wanted you could
-	# have the previous task use defined(run_example_wf.wf_nonexistent) instead of select_first()
-	# and likewise could have used select_first() with the fallback file here instead of defined().
-	# But when checking an array with optionals, it is generally easier to have the optional use
-	# select_first() instead of nesting several defined() checks. Likewise, when checking a single
-	# optional file, it is easier to use defined(), because unlike select_first(), you will not
-	# even execute the verification task if the defined() flag is false, saving time.
 	if (defined(run_example_wf.wf_never)) {
 		call verify_file.filecheck as singleChecker {
 			input:

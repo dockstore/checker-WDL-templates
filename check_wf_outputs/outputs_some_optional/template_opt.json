@@ -5,6 +5,5 @@
   "checker.arrayTruth": [
     "gs://topmed_workflow_testing/checker_toolkit/truth_files/bar.txt",
     "gs://topmed_workflow_testing/checker_toolkit/truth_files/another_bar/bar.txt"
-  ],
-  "checker.magicTruth": "gs://topmed_workflow_testing/checker_toolkit/truth_files/xyzzy.txt"
+  ]
 }

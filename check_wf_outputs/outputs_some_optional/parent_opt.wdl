@@ -60,27 +60,6 @@ task never {
 	}
 }
 
-task one_is_missing {
-	input {
-		File? this_input_is_ignored
-	}
-
-	command <<<
-		echo "Xyzzy!" | tee -a xyzzy.txt
-	>>>
-	
-	output {
-		File out_xyzzy = "xyzzy.txt"
-		File? out_zzyzx = "zzyzx.txt"
-	}
-
-	runtime {
-		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
-		preemptible: 3
-		memory: 2 + "G"
-	}
-}
-
 workflow run_example_wf {
 	input {
 		File? optionalInput
@@ -104,15 +83,11 @@ workflow run_example_wf {
 		call never # bizz
 	}
 
-	call one_is_missing
-
 	output {
 		File wf_always = always.out_foo
 		File? wf_sometimesSingle = sometimesSingle.out_bar
 		Array[File]? wf_sometimesScattered = sometimesScattered.out_bar
 		File? wf_never = never.out_bizz
-		File wf_magicword = one_is_missing.out_xyzzy
-		File? wf_nonexistent = one_is_missing.out_zzyzx
 	}
 
 }
