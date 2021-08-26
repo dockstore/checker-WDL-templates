@@ -4,6 +4,7 @@
   "checker.singleTruth": "gs://topmed_workflow_testing/checker_toolkit/truth_files/foo.txt",
   "checker.arrayTruth": [
     "gs://topmed_workflow_testing/checker_toolkit/truth_files/bar.txt",
-    "gs://topmed_workflow_testing/checker_toolkit/truth_files/another_bar/bar.txt"
+    "gs://topmed_workflow_testing/checker_toolkit/truth_files/another_bar/bar.txt",
+    "gs://topmed_workflow_testing/checker_toolkit/truth_files/foo.txt"
   ]
 }
