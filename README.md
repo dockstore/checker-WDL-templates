@@ -20,7 +20,7 @@
  It is recommended to start with `check_wf_outputs/outputs_all_required/template_req.wdl` if you have never written a checker workflow before. It is the most simple example, providing two types of checks: Checking a single file against another single file, and checking an array of test files against an array of truth files. Use this folder if *all* of your workflow-level outputs are accounted for, ie, none of them are optional. It is okay if you have an optional task-level output; all that is getting checked are the workflow-level outputs.
  
  Many workflows have optional outputs, which greatly complicate the process of creating modular checker workflows. This is what the `check_wf_outputs/outputs_some_optional/` folder is for.
-
+ 
 ### Checking task-level outputs
  Advanced users may wish to check not just workflow-level outputs, but task-level intermediate files too. This will require calling the tasks of the imported workflow rather than the entire workflow itself. An example of this can be seen in `check_task_outputs/` folder. Note that this is based on a "real" workflow, and will take much longer to execute than most of the other repos in this folder.
 
