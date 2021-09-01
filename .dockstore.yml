@@ -1,7 +1,7 @@
 version: 1.2
 workflows:
    - subclass: WDL
-     primaryDescriptorPath: /check_wf_outputs/outputs_some_optional/break_this_link/parent_opt.wdl
+     primaryDescriptorPath: /check_wf_outputs/outputs_some_optional/parent_opt.wdl
      testParameterFiles:
         - /check_wf_outputs/outputs_some_optional/parent_opt_gs.json
      name: tutorial-wf-with-optional-outputs
