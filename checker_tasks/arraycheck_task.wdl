@@ -36,9 +36,9 @@ task arraycheck_classic {
 	touch "report.txt"
 	for j in ~{sep=' ' test}
 	do
-		actual_truth=""  # reset every iteration
-		md5sum ${j} > sum.txt
-		test_basename="$(basename -- ${j})"
+		actual_truth=""  # reset name of TRUTH file
+		md5sum ${j} > sum.txt # md5sum of TEST file
+		test_basename="$(basename -- ${j})" # basename of TEST file
 
 		for i in ~{sep=' ' truth}
 		do
