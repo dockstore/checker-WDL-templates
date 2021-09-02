@@ -42,8 +42,9 @@ task filecheck {
     md5sum ~{truth} > truth.txt
     touch "report.txt"
 
-    if cat ~{truth} | md5sum --check test.txt; then
+    if echo "$(cut -f1 -d' ' test.txt)" ~{truth} | md5sum --check; then
       echo "Files pass" | tee -a report.txt
+      exit 0
     else
       if ~[ "{verbose}" ]; then
         echo "Test checksum:" | tee -a report.txt
@@ -58,8 +59,10 @@ task filecheck {
         cmp --verbose test.txt truth.txt | tee -a report.txt
         diff test.txt truth.txt | tee -a report.txt
         diff -w test.txt truth.txt
+        exit 1
       else
         echo "Files do not pass md5sum check" | tee -a report.txt
+        exit 1
       fi
     fi
 
@@ -67,6 +70,8 @@ task filecheck {
 
   output {
     File report = "report.txt"
+    File testmd5 = "test.txt"
+    File truthmd5 = "truth.txt"
   }
 
   runtime {
