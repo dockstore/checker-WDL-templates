@@ -16,8 +16,10 @@ task filecheck {
   input {
     File? test
     File truth
-    Boolean verbose
-    Boolean fail_if_nothing_to_check = false
+    Boolean verbose = false  # give verbose output upon failure
+    Boolean fail_if_nothing_to_check = false  # fail if test file not defined
+    Boolean rdata_check = false  # check with all.equal() upon failure; only use with RData files!
+    Float tolerance = 0.00000001  # tolerance to use for all.equal(); default is 1.0E-8
   }
 
   Int truth_size = ceil(size(truth, "GB"))
@@ -46,7 +48,7 @@ task filecheck {
       echo "Files pass" | tee -a report.txt
       exit 0
     else
-      if [ "~{verbose}" ]; then
+      if [ "~{verbose}" = "true" ]; then
         echo "Test checksum:" | tee -a report.txt
         cat test.txt | tee -a report.txt
         echo "Truth checksum:" | tee -a report.txt
@@ -59,9 +61,20 @@ task filecheck {
         cmp --verbose test.txt truth.txt | tee -a report.txt
         diff test.txt truth.txt | tee -a report.txt
         diff -w test.txt truth.txt
-        exit 1
       else
         echo "Files do not pass md5sum check" | tee -a report.txt
+      fi
+      if [ "~{rdata_check}" = "true" ]; then
+        echo "Calling Rscript to check for functional equivalence..."
+        if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}
+        then
+          echo "Outputs are not identical, but are mostly equivalent." | tee -a report.txt
+          exit 0
+        else
+          echo "Outputs vary beyond accepted tolerance (default:1.0e-8)." | tee -a report.txt
+          exit 1
+        fi
+      else
         exit 1
       fi
     fi
@@ -77,7 +90,7 @@ task filecheck {
   runtime {
     cpu: 1
     disks: if defined(test) then "local-disk " + finalDiskSize + " HDD" else "local-disk " + truth_size + " HDD"
-    docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
+    docker: "quay.io/aofarrel/rchecker:1.1.0"
     memory: "1 GB"
     preemptible: 2
   }
