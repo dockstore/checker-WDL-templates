@@ -13,7 +13,7 @@
  * arraycheck: Template for checking each file in a test array against its matching file in a truth array. You can set `fastfail` to `True` if you want to exit on the first md5 mismatch, otherwise all mismatches will be reported. This makes the following assumptions:
     * Both arrays are the same length
     * The truth and test arrays have matching filenames -- ie, file.txt in the truth array will be checked against file.txt in the test array
- 
+ **It is strongly recommended that if you choose to import these tasks directly in your checker WDL, you import from a specific tagged commit, instead of pulling from main.**
 ### Checking workflow-level outputs
  There are two folders in `check_wf_outputs/`, one where the parent workflow's outputs will always exist, and one where some of the outputs are considered optional outputs. You can run the parent workflows with the provided parent*.wdl and parent*.json files. The actual checkers start with the word template.
  
