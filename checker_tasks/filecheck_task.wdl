@@ -16,7 +16,7 @@ task filecheck {
   input {
     File? test
     File truth
-    Boolean verbose = true
+    Boolean verbose
     Boolean fail_if_nothing_to_check = false
   }
 
@@ -46,7 +46,7 @@ task filecheck {
       echo "Files pass" | tee -a report.txt
       exit 0
     else
-      if ~[ "{verbose}" ]; then
+      if [ "~{verbose}" ]; then
         echo "Test checksum:" | tee -a report.txt
         cat test.txt | tee -a report.txt
         echo "Truth checksum:" | tee -a report.txt
