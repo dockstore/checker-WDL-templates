@@ -66,8 +66,7 @@ task filecheck {
       fi
       if [ "~{rdata_check}" = "true" ]; then
         echo "Calling Rscript to check for functional equivalence..."
-        if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}
-        then
+        if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}; then
           echo "Outputs are not identical, but are mostly equivalent." | tee -a report.txt
           exit 0
         else
