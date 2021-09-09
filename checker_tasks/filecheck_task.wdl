@@ -88,8 +88,7 @@ task filecheck {
 
   runtime {
     cpu: 1
-    disks: i"local-disk " + finalDiskSize + " HDD"
-    #disks: if defined(test) then "local-disk " + finalDiskSize + " HDD" else "local-disk " + truth_size + " HDD"
+    disks: "local-disk " + finalDiskSize + " HDD"
     docker: "quay.io/aofarrel/rchecker:1.1.0"
     memory: "1 GB"
     preemptible: 2
