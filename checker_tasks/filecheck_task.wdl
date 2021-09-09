@@ -23,7 +23,7 @@ task filecheck {
   }
 
   Int truth_size = ceil(size(truth, "GB"))
-  Int finalDiskSize =  2*truth_size + 3
+  Int finalDiskSize = 2*truth_size + 3
 
   command <<<
     # check if test is defined
@@ -88,7 +88,8 @@ task filecheck {
 
   runtime {
     cpu: 1
-    disks: if defined(test) then "local-disk " + finalDiskSize + " HDD" else "local-disk " + truth_size + " HDD"
+    disks: i"local-disk " + finalDiskSize + " HDD"
+    #disks: if defined(test) then "local-disk " + finalDiskSize + " HDD" else "local-disk " + truth_size + " HDD"
     docker: "quay.io/aofarrel/rchecker:1.1.0"
     memory: "1 GB"
     preemptible: 2
