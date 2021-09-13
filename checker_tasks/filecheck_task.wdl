@@ -16,12 +16,14 @@ task filecheck {
   input {
     File? test
     File truth
-    Boolean verbose = true
-    Boolean fail_if_nothing_to_check = false
+    Boolean verbose = false  # give verbose output upon failure
+    Boolean fail_if_nothing_to_check = false  # fail if test file not defined
+    Boolean rdata_check = false  # check with all.equal() upon failure; only use with RData files!
+    Float tolerance = 0.00000001  # tolerance to use for all.equal(); default is 1.0E-8
+    Int truth_size = ceil(size(truth, "GB"))
   }
 
-  Int truth_size = ceil(size(truth, "GB"))
-  Int finalDiskSize =  2*truth_size + 3
+  Int finalDiskSize = 2*truth_size + 3
 
   command <<<
     # check if test is defined
