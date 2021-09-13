@@ -45,7 +45,8 @@ task filecheck {
     touch "report.txt"
 
     if echo "$(cut -f1 -d' ' test.txt)" ~{truth} | md5sum --check; then
-      echo "Files pass" | tee -a report.txt
+      echo "Files pass md5sum check." | tee -a report.txt
+      echo "PASS" | tee -a report.txt
       exit 0
     else
       if [ "~{verbose}" = "true" ]; then
@@ -62,18 +63,21 @@ task filecheck {
         diff test.txt truth.txt | tee -a report.txt
         diff -w test.txt truth.txt
       else
-        echo "Files do not pass md5sum check" | tee -a report.txt
+        echo "Files do not pass md5sum check." | tee -a report.txt
       fi
       if [ "~{rdata_check}" = "true" ]; then
-        echo "Calling Rscript to check for functional equivalence..."
+        echo "Calling Rscript to check for functional equivalence..." | tee -a report.txt
         if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}; then
-          echo "Outputs are not identical, but are mostly equivalent." | tee -a report.txt
+          echo "Test file not identical to truth file, but are within ~{tolerance}." | tee -a report.txt
+          echo "PASS" | tee -a report.txt
           exit 0
         else
-          echo "Outputs vary beyond accepted tolerance (default:1.0e-8)." | tee -a report.txt
+          echo "Test file varies beyond accepted tolerance of ~{tolerance}. FAIL" | tee -a report.txt
+          echo "FAIL" | tee -a report.txt
           exit 1
         fi
       else
+        echo "FAIL" | tee -a report.txt
         exit 1
       fi
     fi
