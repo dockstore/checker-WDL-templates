@@ -26,6 +26,8 @@ task arraycheck_classic {
 		Array[File] test
 		Array[File] truth
 		Boolean fastfail = false  # should we exit out upon first mismatch?
+		Boolean rdata_check = false  # check with all.equal() upon failure; only use with RData files!
+		Float tolerance = 0.00000001  # tolerance to use for all.equal(); default is 1.0E-8
 	}
 
 	Int test_size = ceil(size(test, "GB"))
@@ -52,9 +54,26 @@ task arraycheck_classic {
 			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
 				echo "$j does not match expected truth file $i" | tee -a report.txt
-				if ~{fastfail}
-				then
-					exit 1
+				if [ "~{rdata_check}" = "true" ]; then
+					echo "Calling Rscript to check for functional equivalence..." | tee -a report.txt
+					if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}; then
+						echo "Test file not identical to truth file, but are within ~{tolerance}." | tee -a report.txt
+						echo "PASS" | tee -a report.txt
+						exit 0
+					else
+						echo "Test file varies beyond accepted tolerance of ~{tolerance}. FAIL" | tee -a report.txt
+						echo "FAIL" | tee -a report.txt
+						if ~{fastfail}
+						then
+							exit 1
+						fi
+			        fi
+				else
+					echo "FAIL" | tee -a report.txt
+					if ~{fastfail}
+					then
+						exit 1
+					fi
 				fi
 			else
 				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" | tee -a report.txt
@@ -75,7 +94,7 @@ task arraycheck_classic {
 	runtime {
 		cpu: 2
 		disks: "local-disk " + finalDiskSize + " HDD"
-		docker: "quay.io/aofarrel/goleft-covstats:circleci-push"
+		docker: "quay.io/aofarrel/rchecker:1.1.0"
 		memory: "2 GB"
 		preemptible: 2
 	}
