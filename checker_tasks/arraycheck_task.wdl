@@ -67,7 +67,7 @@ task arraycheck_classic {
 						then
 							exit 1
 						fi
-			        fi
+					fi
 				else
 					echo "FAIL" | tee -a report.txt
 					if ~{fastfail}
