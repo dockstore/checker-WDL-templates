@@ -56,7 +56,7 @@ task arraycheck_classic {
 				echo "$j does not match expected truth file $i" | tee -a report.txt
 				if [ "~{rdata_check}" = "true" ]; then
 					echo "Calling Rscript to check for functional equivalence..." | tee -a report.txt
-					if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}; then
+					if Rscript /opt/rough_equivalence_check.R $j $i ~{tolerance}; then
 						echo "Test file not identical to truth file, but are within ~{tolerance}." | tee -a report.txt
 						echo "PASS" | tee -a report.txt
 						exit 0
