@@ -78,7 +78,6 @@ task arraycheck_classic {
 					if ~{fastfail}
 					then
 						exit 1
-					fi
 					else
 						failed_at_least_once="true"
 					fi
