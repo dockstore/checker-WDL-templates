@@ -90,7 +90,7 @@ task arraycheck_classic {
 	done
 
 	echo "Finished checking all files in test array." | tee -a report.txt
-	if [ "$failed_at_least_once" != "" ]
+	if [ "$failed_at_least_once" != "false" ]
 	then
 		echo "At least one file failed. Returning 1..."| tee -a report.txt
 		exit 1
