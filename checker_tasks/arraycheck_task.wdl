@@ -35,6 +35,7 @@ task arraycheck_classic {
 	Int finalDiskSize = test_size + truth_size + 3
 
 	command <<<
+	failed_at_least_once="false"
 	touch "report.txt"
 	for j in ~{sep=' ' test}
 	do
@@ -50,13 +51,15 @@ task arraycheck_classic {
 				break
 			fi
 		done
-		if [ "$actual_truth" != "" ]; then
+		if [ "$actual_truth" != "" ]
+		then
 			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
 				echo "$j does not match expected truth file $i" | tee -a report.txt
 				if [ "~{rdata_check}" = "true" ]; then
 					echo "Calling Rscript to check for functional equivalence..." | tee -a report.txt
-					if Rscript /opt/rough_equivalence_check.R $j $i ~{tolerance}; then
+					if Rscript /opt/rough_equivalence_check.R $j $i ~{tolerance}
+					then
 						echo "Test file not identical to truth file, but are within ~{tolerance}." | tee -a report.txt
 						echo "PASS" | tee -a report.txt
 						exit 0
@@ -66,6 +69,8 @@ task arraycheck_classic {
 						if ~{fastfail}
 						then
 							exit 1
+						else
+							failed_at_least_once="true"
 						fi
 					fi
 				else
@@ -73,6 +78,9 @@ task arraycheck_classic {
 					if ~{fastfail}
 					then
 						exit 1
+					fi
+					else
+						failed_at_least_once="true"
 					fi
 				fi
 			else
@@ -84,6 +92,13 @@ task arraycheck_classic {
 	done
 
 	echo "Finished checking all files in test array." | tee -a report.txt
+	if [ "$failed_at_least_once" != "" ]
+	then
+		echo "At least one file failed. Returning 1..."| tee -a report.txt
+		exit 1
+	else
+		echo "All files that were checked passed. Returning 0..."| tee -a report.txt
+	fi
 
 	>>>
 
