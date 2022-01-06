@@ -62,7 +62,6 @@ task arraycheck_classic {
 					then
 						echo "Test file not identical to truth file, but are within ~{tolerance}." | tee -a report.txt
 						echo "PASS" | tee -a report.txt
-						exit 0
 					else
 						echo "Test file varies beyond accepted tolerance of ~{tolerance}. FAIL" | tee -a report.txt
 						echo "FAIL" | tee -a report.txt
