@@ -14,7 +14,7 @@ version 1.0
 # Replace the first URL here with the URL of the workflow to be checked.
 import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v0.100.0/check_wf_outputs/outputs_some_optional/parent_opt.wdl" as check_me
 import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v0.100.0/checker_tasks/filecheck_task.wdl" as verify_file
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v0.100.0/checker_tasks/arraycheck_task.wdl" as verify_array
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/return-1-if-a-non-fastfail-mismatch/checker_tasks/arraycheck_task.wdl" as verify_array
 
 # If running this locally, you can import tasks with relative paths, like this:
 #import "parent_opt.wdl" as check_me
