@@ -1,6 +1,7 @@
 # Checker WDL templates
- Templates for checker WDLs. [Checker workflows](https://docs.dockstore.org/en/develop/advanced-topics/checker-workflows.html) are good practice for reproducibility. Although some developers may prefer an advanced CI/CD solution for their workflows, checker workflows are generally easier to develop and satisfactory for many use cases. Of course, checker workflows can be part of a more advanced CI/CD solution -- feel free to build upon these.
- Generally speaking, a checker workflow compares the contents of a test file against a truth file. However, more advanced comparions are possible. This repo supports comparing RData files to check for almost-but-not-quite equivalence, which can be useful as otherwise deterministic outputs may vary slightly depending on which backend a workflow is executed upon. Non-RData files are checked with a simple md5sum.
+ Templates for checker WDLs. [Checker workflows](https://docs.dockstore.org/en/develop/advanced-topics/checker-workflows.html) are good practice for reproducibility. Although some developers may prefer an advanced CI/CD solution for their workflows, checker workflows are generally easier to develop and satisfactory for many use cases. Of course, checker workflows can be part of a more advanced CI/CD solution -- feel free to build upon these.  
+ 
+ Generally speaking, a checker workflow compares the contents of a test file against a truth file. This repo supports comparing RData files to check for almost-but-not-quite equivalence, which can be useful as otherwise deterministic outputs may vary slightly depending on which backend a workflow is executed upon. Non-RData files are checked with a simple md5sum.
  
 ## The actual checker tasks
  The actual checker tasks that this repos' template workflows (see below) are pulled from the `checker_tasks/` folder, which you can read to learn how to develop checkers of your own. They are as follows:
