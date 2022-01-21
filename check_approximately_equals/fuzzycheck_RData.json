@@ -1,0 +1,12 @@
+{
+  "checker.testRDatafile": "gs://topmed_workflow_testing/checker_toolkit/wf_inputs/allele_chr1.RData",
+  "checker.truthRDatafile": "gs://topmed_workflow_testing/UWGAC_WDL/checker/assoc/aggregate/allele_chr1.RData",
+  "checker.testRDataarray": [
+    "gs://topmed_workflow_testing/checker_toolkit/wf_inputs/allele_chr1.RData",
+    "gs://topmed_workflow_testing/checker_toolkit/wf_inputs/allele_chr2.RData"
+  ],
+  "checker.truthRDataarray": [
+    "gs://topmed_workflow_testing/UWGAC_WDL/checker/assoc/aggregate/allele_chr1.RData",
+    "gs://topmed_workflow_testing/UWGAC_WDL/checker/assoc/aggregate/allele_chr2.RData"
+  ]
+}

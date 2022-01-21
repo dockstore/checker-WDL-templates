@@ -1,0 +1,12 @@
+{
+  "checker.testRDatafile": "test_data/allele_chr1.RData",
+  "checker.truthRDatafile": "test_data/truths/allele_chr1.RData",
+  "checker.testRDataarray": [
+    "test_data/allele_chr1.RData",
+    "test_data/allele_chr2.RData"
+  ],
+  "checker.truthRDataarray": [
+    "test_data/truths/allele_chr1.RData",
+    "test_data/truths/allele_chr2.RData"
+  ]
+}
