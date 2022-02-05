@@ -107,7 +107,7 @@ task arraycheck_classic {
 	runtime {
 		cpu: 2
 		disks: "local-disk " + finalDiskSize + " HDD"
-		docker: "quay.io/aofarrel/rchecker:1.1.0"
+		docker: "quay.io/aofarrel/rchecker:1.2.0"
 		memory: "2 GB"
 		preemptible: 2
 	}
@@ -119,6 +119,7 @@ task arraycheck_optional {
 	# Ideally this task should never be called if the test array does
 	# not exist... put a defined() check before calling this task.
 	# Note that disk size is based upon truth array * 2 now!
+	# Also note this doesn't support RData checks at the moment.
 	input {
 		Array[File]? test
 		Array[File] truth

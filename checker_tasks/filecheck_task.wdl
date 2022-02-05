@@ -93,7 +93,7 @@ task filecheck {
   runtime {
     cpu: 1
     disks: "local-disk " + finalDiskSize + " HDD"
-    docker: "quay.io/aofarrel/rchecker:1.1.0"
+    docker: "quay.io/aofarrel/rchecker:1.2.0"
     memory: "1 GB"
     preemptible: 2
   }
