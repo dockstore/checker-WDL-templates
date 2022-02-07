@@ -107,7 +107,7 @@ task arraycheck_classic {
 	runtime {
 		cpu: 2
 		disks: "local-disk " + finalDiskSize + " HDD"
-		docker: "quay.io/aofarrel/rchecker:1.2.0"
+		docker: "quay.io/aofarrel/rchecker@sha256:73142f0f3ac5dd89dfa260a72a5397fbd7cffd9df23e3ce3e800308d6b21964c"
 		memory: "2 GB"
 		preemptible: 2
 	}
