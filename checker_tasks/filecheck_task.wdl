@@ -28,25 +28,25 @@ task filecheck {
   command <<<
     # check if test is defined
     if [ "~{test}" ]; then
-      echo "Test file exists" | tee -a report.txt
+      echo "Test file $testbase exists."
     else
-      echo "No test file found" | tee -a report.txt
+      echo "No test file found"
       if [ "~{fail_if_nothing_to_check}" = "false" ]; then
-        echo "Nothing to do. Exiting gracefully..." | tee -a report.txt
+        echo "Nothing to do. Exiting gracefully..." 
         exit 0
       else
-        echo "Nothing to do. fail_if_nothing_to_check is true. Exiting disgracefully..."  | tee -a report.txt
+        echo "Nothing to do. fail_if_nothing_to_check is true. Exiting with error..."
         exit 1
       fi
     fi
     
+    testbase=$(basename "~{test}")
     md5sum ~{test} > test.txt
     md5sum ~{truth} > truth.txt
     touch "report.txt"
 
     if echo "$(cut -f1 -d' ' test.txt)" ~{truth} | md5sum --check; then
-      echo "Files pass md5sum check." | tee -a report.txt
-      echo "PASS" | tee -a report.txt
+      echo "$testbase PASS" | tee -a report.txt
       exit 0
     else
       if [ "~{verbose}" = "true" ]; then
@@ -63,20 +63,21 @@ task filecheck {
         diff test.txt truth.txt | tee -a report.txt
         diff -w test.txt truth.txt
       else
-        echo "Files do not pass md5sum check." | tee -a report.txt
+        echo "$testbase does not pass md5sum check."
       fi
       if [ "~{rdata_check}" = "true" ]; then
-        echo "Calling Rscript to check for functional equivalence..." | tee -a report.txt
+        echo "Calling Rscript to check for functional equivalence..."
         if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}; then
-          echo "Test file not identical to truth file, but are within ~{tolerance}." | tee -a report.txt
-          echo "PASS" | tee -a report.txt
+          echo "$testbase not identical to truth file, but is within ~{tolerance}. PASS"
+          echo "$testbase PASS (non-identical)" | tee -a report.txt
           exit 0
         else
-          echo "Test file varies beyond accepted tolerance of ~{tolerance}. FAIL" | tee -a report.txt
+          echo "$testbase varies beyond accepted tolerance of ~{tolerance}. FAIL"
           echo "FAIL" | tee -a report.txt
           exit 1
         fi
       else
+        echo "FAIL" # this one is for stdout
         echo "FAIL" | tee -a report.txt
         exit 1
       fi

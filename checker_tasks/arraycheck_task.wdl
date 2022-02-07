@@ -37,17 +37,17 @@ task arraycheck_classic {
 	command <<<
 	failed_at_least_once="false"
 	touch "report.txt"
-	for j in ~{sep=' ' test}
+	for TEST in ~{sep=' ' test}
 	do
 		actual_truth=""  # reset name of TRUTH file
-		md5sum ${j} > sum.txt # md5sum of TEST file
-		test_basename="$(basename -- ${j})" # basename of TEST file
+		md5sum ${TEST} > sum.txt # md5sum of TEST file
+		test_basename="$(basename -- ${TEST})" # basename of TEST file
 
-		for i in ~{sep=' ' truth}
+		for TRUTH in ~{sep=' ' truth}
 		do
-			truth_basename="$(basename -- ${i})"
+			truth_basename="$(basename -- ${TRUTH})"
 			if [ "${test_basename}" == "${truth_basename}" ]; then
-				actual_truth="$i"
+				actual_truth="$TRUTH"
 				break
 			fi
 		done
@@ -55,16 +55,16 @@ task arraycheck_classic {
 		then
 			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
-				echo "$j does not match expected truth file $i" | tee -a report.txt
+				echo "$TEST does not match expected truth file $TRUTH"
 				if [ "~{rdata_check}" = "true" ]; then
-					echo "Calling Rscript to check for functional equivalence..." | tee -a report.txt
-					if Rscript /opt/rough_equivalence_check.R $j $i ~{tolerance}
+					echo "Calling Rscript to check for functional equivalence..."
+					if Rscript /opt/rough_equivalence_check.R $TEST $TRUTH ~{tolerance}
 					then
-						echo "Test file not identical to truth file, but are within ~{tolerance}." | tee -a report.txt
-						echo "PASS" | tee -a report.txt
+						echo "Test file not identical to truth file, but are within ~{tolerance}. PASS"
+						echo "$test_basename PASS (non-identical)" | tee -a report.txt
 					else
-						echo "Test file varies beyond accepted tolerance of ~{tolerance}. FAIL" | tee -a report.txt
-						echo "FAIL" | tee -a report.txt
+						echo "Test file varies beyond accepted tolerance of ~{tolerance}. FAIL"
+						echo "$test_basename FAIL" | tee -a report.txt
 						if ~{fastfail}
 						then
 							exit 1
@@ -73,7 +73,7 @@ task arraycheck_classic {
 						fi
 					fi
 				else
-					echo "FAIL" | tee -a report.txt
+					echo "$test_basename FAIL" | tee -a report.txt
 					if ~{fastfail}
 					then
 						exit 1
@@ -82,7 +82,8 @@ task arraycheck_classic {
 					fi
 				fi
 			else
-				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" | tee -a report.txt
+				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)"
+				echo "$test_basename PASS" | tee -a report.txt
 			fi
 		else
 			echo "A truth file was not found for $test_basename" | tee -a report.txt
@@ -92,10 +93,10 @@ task arraycheck_classic {
 	echo "Finished checking all files in test array." | tee -a report.txt
 	if [ "$failed_at_least_once" != "false" ]
 	then
-		echo "At least one file failed. Returning 1..."| tee -a report.txt
+		echo "At least one file failed. Returning 1..."
 		exit 1
 	else
-		echo "All files that were checked passed. Returning 0..."| tee -a report.txt
+		echo "All files that were checked passed. Returning 0..."
 	fi
 
 	>>>
@@ -131,30 +132,31 @@ task arraycheck_optional {
 
 	command <<<
 	touch "report.txt"
-	for j in ~{sep=' ' test}
+	for TEST in ~{sep=' ' test}
 	do
 		actual_truth=""  # reset every iteration
-		md5sum ${j} > sum.txt
-		test_basename="$(basename -- ${j})"
+		md5sum ${TEST} > sum.txt
+		test_basename="$(basename -- ${TEST})"
 
-		for i in ~{sep=' ' truth}
+		for TRUTH in ~{sep=' ' truth}
 		do
-			truth_basename="$(basename -- ${i})"
+			truth_basename="$(basename -- ${TRUTH})"
 			if [ "${test_basename}" == "${truth_basename}" ]; then
-				actual_truth="$i"
+				actual_truth="$TRUTH"
 				break
 			fi
 		done
 		if [ "$actual_truth" != "" ]; then
 			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
-				echo "$j does not match expected truth file $i" | tee -a report.txt
+				echo "$TEST does not match expected truth file $TRUTH" | tee -a report.txt
 				if ~{fastfail}
 				then
 					exit 1
 				fi
 			else
-				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" | tee -a report.txt
+				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" 
+				echo "$test_basename PASS" | tee -a report.txt
 			fi
 		else
 			echo "A truth file was not found for $test_basename" | tee -a report.txt
