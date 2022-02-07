@@ -155,7 +155,8 @@ task arraycheck_optional {
 					exit 1
 				fi
 			else
-				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" | tee -a report.txt
+				echo "$test_basename found to pass with sum $(cut -f1 -d' ' sum.txt)" 
+				echo "$test_basename PASS" | tee -a report.txt
 			fi
 		else
 			echo "A truth file was not found for $test_basename" | tee -a report.txt
