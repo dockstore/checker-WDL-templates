@@ -25,8 +25,8 @@ version 1.0
 # files are in an array, but none of those files can have type File?.
 
 # Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.0.0/checker_tasks/filecheck_task.wdl" as verify_file
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.0.0/checker_tasks/arraycheck_task.wdl" as verify_array
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/filecheck_task.wdl" as verify_file
+import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/arraycheck_task.wdl" as verify_array
 
 
 workflow checker {
