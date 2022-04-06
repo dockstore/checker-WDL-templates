@@ -12,14 +12,27 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+################################### USAGE ####################################
+# 
+# Options:
+# fail_if_nothing_to_check: Fail if test file is not defined. Default: False.
+# rdata_check: If there is an md5sum mismatch, compare the truth and test files
+#   using R's all.equal() function. This is important as different backends
+#   can give slightly different but functionally equivalent output after
+#   certain not-quite-deterministic R functions. Should only be set to true
+#   if you are working entirely with RData files. Defaults to false.
+# tolerance: If rdata_check is true, this is tolerance to use for all.equal.
+#   Defaults to 1.0E-8 (roughly the same as R's built-in default).
+# verbose: Give verbose output upon failure. Defaults to false.
+
 task filecheck {
   input {
     File? test
     File truth
     Boolean verbose = false  # give verbose output upon failure
-    Boolean fail_if_nothing_to_check = false  # fail if test file not defined
-    Boolean rdata_check = false  # check with all.equal() upon failure; only use with RData files!
-    Float tolerance = 0.00000001  # tolerance to use for all.equal(); default is 1.0E-8
+    Boolean fail_if_nothing_to_check = false
+    Boolean rdata_check = false
+    Float tolerance = 0.00000001 
   }
 
   Int truth_size = ceil(size(truth, "GB"))

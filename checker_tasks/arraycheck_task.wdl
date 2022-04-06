@@ -12,12 +12,24 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-################################### NOTES ####################################
+################################### USAGE ####################################
 # For every file in the test array, we iterate through the truth array and
 # try to find a file that matches the truth file. This assumes that file names 
 # between the test and truth files match. If a truth file cannot be found for
-# a test file, we continue.
-# You can set fastfail to exit 1 upon the first mismatch.
+# a test file, a warning is thrown.
+# 
+# Options:
+# exit_upon_warning: exit as soon as a warning is thrown (in practice: exit the
+#		first time files do not match, or we fail to find a truth file for a 
+#		given test file.) Defaults to false.
+# rdata_check: If there is an md5sum mismatch, compare the truth and test files
+#		using R's all.equal() function. This is important as different backends
+#		can give slightly different but functionally equivalent output after
+#		certain not-quite-deterministic R functions. Should only be set to true
+#		if you are working entirely with RData files. Defaults to false.
+# tolerance: If rdata_check is true, this is the tolerance to use for all.equal.
+#		Defaults to 1.0E-8 (roughly the same as R's built-in default).
+#
 
 task arraycheck_classic {
 	# Use this task when ALL files in array exist
@@ -25,9 +37,9 @@ task arraycheck_classic {
 	input {
 		Array[File] test
 		Array[File] truth
-		Boolean fastfail = false  # should we exit out upon first mismatch?
-		Boolean rdata_check = false  # check with all.equal() upon failure; only use with RData files!
-		Float tolerance = 0.00000001  # tolerance to use for all.equal(); default is 1.0E-8
+		Boolean exit_upon_warning = false
+		Boolean rdata_check = false 
+		Float tolerance = 0.00000001
 	}
 
 	Int test_size = ceil(size(test, "GB"))
@@ -63,9 +75,9 @@ task arraycheck_classic {
 						echo "Test file not identical to truth file, but are within ~{tolerance}. PASS"
 						echo "$test_basename PASS (non-identical)" | tee -a report.txt
 					else
-						echo "Test file varies beyond accepted tolerance of ~{tolerance}. FAIL"
+						echo "WARNING: Test file varies beyond accepted tolerance of ~{tolerance}. FAIL"
 						echo "$test_basename FAIL" | tee -a report.txt
-						if ~{fastfail}
+						if ~{exit_upon_warning}
 						then
 							exit 1
 						else
@@ -74,7 +86,7 @@ task arraycheck_classic {
 					fi
 				else
 					echo "$test_basename FAIL" | tee -a report.txt
-					if ~{fastfail}
+					if ~{exit_upon_warning}
 					then
 						exit 1
 					else
@@ -86,7 +98,10 @@ task arraycheck_classic {
 				echo "$test_basename PASS" | tee -a report.txt
 			fi
 		else
-			echo "A truth file was not found for $test_basename" | tee -a report.txt
+			echo "WARNING: A truth file was not found for $test_basename" | tee -a report.txt
+			if ~{exit_upon_warning}
+			then
+				exit 1
 		fi
 	done
 
@@ -124,7 +139,7 @@ task arraycheck_optional {
 	input {
 		Array[File]? test
 		Array[File] truth
-		Boolean fastfail = false  # should we exit out upon first mismatch?
+		Boolean exit_upon_warning = false
 	}
 
 	Int truth_size = ceil(size(truth, "GB"))
@@ -149,8 +164,8 @@ task arraycheck_optional {
 		if [ "$actual_truth" != "" ]; then
 			if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 			then
-				echo "$TEST does not match expected truth file $TRUTH" | tee -a report.txt
-				if ~{fastfail}
+				echo "WARNING: $TEST does not match expected truth file $TRUTH" | tee -a report.txt
+				if ~{exit_upon_warning}
 				then
 					exit 1
 				fi
@@ -159,7 +174,11 @@ task arraycheck_optional {
 				echo "$test_basename PASS" | tee -a report.txt
 			fi
 		else
-			echo "A truth file was not found for $test_basename" | tee -a report.txt
+			echo "WARNING: A truth file was not found for $test_basename" | tee -a report.txt
+			if ~{exit_upon_warning}
+			then
+				exit 1
+			fi
 		fi
 	done
 
