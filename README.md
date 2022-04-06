@@ -8,7 +8,7 @@
 
  * filecheck: Template for checking a single test file against a single truth file.
 
- * arraycheck: Template for checking each file in a test array against its matching file in a truth array. You can set `fastfail` to `True` if you want to exit on the first md5 mismatch, otherwise all mismatches will be reported. This makes the following assumptions:
+ * arraycheck: Template for checking each file in a test array against its matching file in a truth array. You can set `exit_upon_warning` to `True` if you want to exit on the first md5 mismatch, otherwise all mismatches will be reported. This makes the following assumptions:
     * Both arrays are the same length
     * The truth and test arrays have matching filenames -- ie, file.txt in the truth array will be checked against file.txt in the test array
  
