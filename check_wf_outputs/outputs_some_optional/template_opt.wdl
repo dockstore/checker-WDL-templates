@@ -11,16 +11,6 @@ version 1.0
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/check_wf_outputs/outputs_some_optional/parent_opt.wdl" as check_me
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/filecheck_task.wdl" as verify_file
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/arraycheck_task.wdl" as verify_array
-
-# If running this locally, you can import tasks with relative paths, like this:
-#import "parent_opt.wdl" as check_me
-#import "../../checker_tasks/filecheck_task.wdl" as verify_file
-#import "../../checker_tasks/arraycheck_task.wdl" as verify_array
-
 # In summary:
 # Workflow outputs single Array[File] --> call arraycheck_classic
 # Workflow outputs several Files, all of which are required --> call arraycheck_classic
@@ -28,6 +18,16 @@ import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0
 # Workflow outputs several Files, some of which are required --> call arraycheck_classic with select_first()
 # Workflow outputs single File, which is required --> call filecheck
 # Workflow outputs optional File --> call filecheck but put in a defined() check before the task call or use select_first()
+
+# Replace the first URL here with the URL of the workflow to be checked.
+#import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/check_wf_outputs/outputs_some_optional/parent_opt.wdl" as check_me
+#import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/filecheck_task.wdl" as verify_file
+#import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/arraycheck_task.wdl" as verify_array
+
+# If running this locally, you can import tasks with relative paths, like this:
+import "parent_opt.wdl" as check_me
+import "../../checker_tasks/filecheck_task.wdl" as verify_file
+import "../../checker_tasks/arraycheck_task.wdl" as verify_array
 
 
 workflow checker {
