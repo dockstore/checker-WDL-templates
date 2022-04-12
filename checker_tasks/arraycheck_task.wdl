@@ -26,7 +26,7 @@ task arraycheck_classic {
 		Array[File] test
 		Array[File] truth
 		Boolean fastfail = false  # should we exit out upon first mismatch?
-		Boolean rdata_check = false  # check with all.equal() upon failure; only use with RData files!
+		Boolean rdata_check = false  # check with all.equal() fdupon failure; only use with RData files!
 		Float tolerance = 0.00000001  # tolerance to use for all.equal(); default is 1.0E-8
 	}
 
