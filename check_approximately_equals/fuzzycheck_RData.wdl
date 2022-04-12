@@ -52,7 +52,6 @@ workflow checker {
 		input:
 			test = testRDataarray,
 			truth = truthRDataarray,
-			truth = truthRDataarray,
 			rdata_check = true
 	}
 
