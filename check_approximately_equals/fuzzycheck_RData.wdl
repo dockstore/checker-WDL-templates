@@ -13,20 +13,20 @@ version 1.0
 # limitations under the License.
 
 ################################### NOTES ####################################
-# If running this locally, you can import tasks with relative paths, like this:
-#import "example_req.wdl" as check_me
-#import "../tasks/filecheck_task.wdl" as verify_file
-#import "../tasks/arraycheck_task.wdl" as verify_array
 #
 # There is no functional difference between "here's an array of files from
 # multiple different tasks" and "here's an array of files that was output 
 # from a single task," provided that in both cases ALL files within the array
 # AND the array itself are NOT optional. You do not need to know how many
 # files are in an array, but none of those files can have type File?.
+#
+# If running this locally, you can import tasks with relative paths, like this:
+import "../checker_tasks/filecheck_task.wdl" as verify_file
+import "../checker_tasks/arraycheck_task.wdl" as verify_array
 
 # Replace the first URL here with the URL of the workflow to be checked.
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/filecheck_task.wdl" as verify_file
-import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/arraycheck_task.wdl" as verify_array
+#import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/filecheck_task.wdl" as verify_file
+#import "https://raw.githubusercontent.com/dockstore/checker-WDL-templates/v1.1.0/checker_tasks/arraycheck_task.wdl" as verify_array
 
 
 workflow checker {

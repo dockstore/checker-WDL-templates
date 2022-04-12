@@ -4,3 +4,7 @@ Cromwell.stderr.txt
 Cromwell.stdout.txt
 .DS_Store
 */cromwell-input/*
+output.txt
+*_checker/*
+_LAST
+*_wf/*
